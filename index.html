@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="da">
+
+<head>
+  <meta charset="utf-8">
+  <title>Jagt Områder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Find og tilføj jagt områder">
+  <meta name="author" content="Frederik Meiner og Morten Gedsted Hansen">
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+</head>
+
+<body onhashchange="pageChange()">
+  <!-- tabbar navigation -->
+  <nav id="tabbar" class="tabbar hide">
+    <a href="#home"><i class="fas fa-map"></i></a>
+    <a href="#add"><i class="fas fa-plus-square"></i></a>
+    <a href="#favorite"><i class="fas fa-star"></i></a>
+    <a href="#profile"><i class="fas fa-user-circle"></i></a>
+  </nav>
+
+  <!-- pages -->
+  <!-- home page -->
+  <section id="home" class="page">
+    <header class="topbar">
+      <h2>Jagt Områder</h2>
+    </header>
+    <input type="search" placeholder="Søg &#40;Postnr., Dyr eller Våben&#41; " onkeyup="search(this.value)">
+    <section id="places-container" class="grid-container"></section>
+  </section>
+
+
+  <!-- add page -->
+  <section id="add" class="page">
+    <header class="topbar">
+      <h2>Tilføj</h2>
+    </header>
+    <form id="userForm">
+      <h2>Tilføj nyt Jagtområde</h2>
+      <input type="text" id="name" placeholder="Type your name" required>
+      <input type="email" id="mail" placeholder="Type your mail" required>
+      <input id="img" type="text" name="img" placeholder="Image URL">
+      <button type="button" name="button" onclick="createUser()">Create User</button>
+    </form>
+
+
+    <form id="update-user">
+      <h2>Update User</h2>
+      <input type="text" id="name-update" required>
+      <input type="email" id="mail-update" required>
+      <button type="button" name="button" onclick="updateUser()">Update User</button>
+    </form>
+  </section>
+
+  <!-- favorite page -->
+  <section id="favorite" class="page">
+    <header class="topbar">
+      <h2>Favoritter</h2>
+    </header>
+    <p>This is my about page</p>
+  </section>
+
+  <!-- profile page -->
+  <section id="profile" class="page">
+    <header class="topbar">
+      <h2>Profil</h2>
+      <a class="right" href="#" onclick="logout()">Logout</a>
+    </header>
+    <div id="user-data"></div>
+  </section>
+
+  <!-- login page -->
+  <section id="login" class="page">
+    <header class="topbar">
+      <h2>Login</h2>
+    </header>
+    <!-- firebase auth container  -->
+    <section id="firebaseui-auth-container"></section>
+  </section>
+
+  <!-- loader  -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+  <!--Fontawsome kit--->
+  <script src="https://kit.fontawesome.com/8dfea7dc78.js" crossorigin="anonymous"></script>
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+  <!-- spa js file -->
+  <script src="js/spa.js"></script>
+  <!-- main js file -->
+  <script src="js/main.js"></script>
+</body>
+
+</html>
