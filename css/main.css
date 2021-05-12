@@ -240,6 +240,7 @@ h1 {
   background-color: var(--light-grey);
   padding: 10px;
   border-radius: 15px;
+  margin-bottom: 20px;
 }
 
 .grid-container>article .headline {
@@ -247,7 +248,7 @@ h1 {
   grid-template-columns: 3fr 1fr;
 }
 
-.grid-container>article #postnr {
+.grid-container>article #by {
   padding-top: 12%;
 }
 
@@ -289,7 +290,7 @@ span {
   font-weight: bold;
 }
 
-input,
+.input,
 select {
   -webkit-appearance: none;
   margin: 1em auto;
@@ -341,58 +342,4 @@ button {
 
 .addToFavorite:hover {
   color: #f1f1f1;
-}
-
-/*Dropdown til dyr og våben*/
-.dropdown-check-list {
-  display: inline-block;
-}
-
-.dropdown-check-list .anchor {
-  position: relative;
-  cursor: pointer;
-  display: inline-block;
-  padding: 5px 50px 5px 10px;
-  border: 1px solid #ccc;
-}
-
-
-.dropdown-check-list .anchor:after {
-  position: absolute;
-  content: "";
-  border-left: 2px solid black;
-  border-top: 2px solid black;
-  padding: 5px;
-  right: 10px;
-  top: 20%;
-  -moz-transform: rotate(-135deg);
-  -ms-transform: rotate(-135deg);
-  -o-transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-  transform: rotate(-135deg);
-}
-
-.dropdown-check-list .anchor:active:after {
-  right: 8px;
-  top: 21%;
-}
-
-.dropdown-check-list ul.items {
-  padding: 2px;
-  display: none;
-  margin: 0;
-  border: 1px solid #ccc;
-  border-top: none;
-}
-
-.dropdown-check-list ul.items li {
-  list-style: none;
-}
-
-.dropdown-check-list.visible .anchor {
-  color: #0094ff;
-}
-
-.dropdown-check-list.visible .items {
-  display: block;
 }

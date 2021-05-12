@@ -92,11 +92,11 @@ placeRef.onSnapshot(function (snapshotData) {
     place.id = doc.id;
     places.push(place);
   });
-  appendUsers(places);
+  appendPlaces(places);
 });
 
 // append users to the DOM
-function appendUsers(places) {
+function appendPlaces(places) {
   console.log(places);
   let htmlTemplate = "";
   for (const place of places) {
@@ -104,7 +104,7 @@ function appendUsers(places) {
     <article>
       <div class="headline">
     <h2>${place.name}</h2>
-    <p id="postnr">${place.postnr}</p>
+    <p id="by">${place.by}</p>
   </div>
     <img src="${place.img}">
 
@@ -131,8 +131,8 @@ function appendUsers(places) {
     <p><span>Tlf.:</span> ${place.tlf}</p>
   </div>
   <div class="buttons">
-    <button onclick="selectUser('${place.id}','${place.name}', '${place.mail}');"><a href="#update-user">Update</a></button>
-    <button class="button-delete" onclick="deleteUser('${place.id}')">Delete</button>
+    <button onclick="selectPlace('${place.id}','${place.name}', '${place.mail}');"><a href="#update-user">Update</a></button>
+    <button class="button-delete" onclick="deletePlace('${place.id}')">Delete</button>
     <button class="addToFavorite"  onclick="addFavorite('${place.id}')"><i class="fas fa-star"></i></button>
   </div>
   </article>
@@ -142,17 +142,49 @@ function appendUsers(places) {
 }
 
 //TODO: Make favoriteButton to a checkbox and make it add post to favorite page if checked
-function addFavorite() {
 
+// ========== CREATE ==========
+function createPlace() {
+  let nameVal = document.querySelector('#name');
+  let descriptionVal = document.querySelector('#description');
+  let animalVal = document.querySelector('#animal');
+  let weaponVal = document.querySelector('#weapon');
+  let ownerVal = document.querySelector('#owner');
+  let mailVal = document.querySelector('#mail');
+  let addressVal = document.querySelector('#address');
+  let tlfVal = document.querySelector('#tlf');
+  let imgSrc = document.querySelector('#img');
 
-}
+  // TODO: create a new object called newUser with the properties: name, mail & img. Add newUser to _userRef (cloud firestore)
+  // make sure to nagivate to home: navigateTo("home");
+  let newPlace = {
+    name: nameVal.value,
+    description: descriptionVal.value,
+    animal: animalVal.value,
+    weapon: weaponVal.value,
+    owner: ownerVal.value,
+    address: addressVal.value,
+    tlf: tlfVal.value,
+    mail: mailVal.value,
+    img: imgSrc.src
+  };
+  console.log(newPlace);
 
-// Dropdown til dyr og våben
+  placeRef.add(newPlace);
+  showLoader(true);
 
-let checkList = document.getElementById('list1');
-checkList.getElementsByClassName('anchor')[0].onclick = function (evt) {
-  if (checkList.classList.contains('visible'))
-    checkList.classList.remove('visible');
-  else
-    checkList.classList.add('visible');
+  navigateTo("home");
+
+  //RESET
+  nameVal.value = "";
+  descriptionVal.value = "";
+  animalVal.value = "";
+  weaponVal.value = "";
+  ownerVal.value = "";
+  addressVal.value = "";
+  tlfVal.value = "";
+  mailVal.value = "";
+  imgSrc.src = "";
+
+  showLoader(false);
 }
