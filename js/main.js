@@ -133,10 +133,26 @@ function appendUsers(places) {
   <div class="buttons">
     <button onclick="selectUser('${place.id}','${place.name}', '${place.mail}');"><a href="#update-user">Update</a></button>
     <button class="button-delete" onclick="deleteUser('${place.id}')">Delete</button>
-    <button class="addToFavorite" onclick="addFavorite('${place.id}')"><i class="fas fa-star"></i></button>
+    <button class="addToFavorite"  onclick="addFavorite('${place.id}')"><i class="fas fa-star"></i></button>
   </div>
   </article>
     `;
   }
   document.querySelector("#places-container").innerHTML = htmlTemplate;
+}
+
+//TODO: Make favoriteButton to a checkbox and make it add post to favorite page if checked
+function addFavorite() {
+
+
+}
+
+// Dropdown til dyr og våben
+
+let checkList = document.getElementById('list1');
+checkList.getElementsByClassName('anchor')[0].onclick = function (evt) {
+  if (checkList.classList.contains('visible'))
+    checkList.classList.remove('visible');
+  else
+    checkList.classList.add('visible');
 }

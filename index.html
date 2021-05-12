@@ -39,9 +39,35 @@
     </header>
     <form id="userForm">
       <h2>Tilføj nyt Jagtområde</h2>
-      <input type="text" id="name" placeholder="Type your name" required>
-      <input type="email" id="mail" placeholder="Type your mail" required>
-      <input id="img" type="text" name="img" placeholder="Image URL">
+      <input type="text" id="name" placeholder="Skriv område navn" required>
+      <input type="text" id="postnr" placeholder="Skriv postnr." required>
+      <input type="text" id="description" placeholder="Skriv en beskrivelse af området" required>
+      <div id="listAnimals" class="dropdown-check-list" tabindex="100">
+        <span class="anchor">Vælg dyr</span>
+        <ul class="items">
+          <li><input type="checkbox" />Krondyr</li>
+          <li><input type="checkbox" />Dådyr</li>
+          <li><input type="checkbox" />Rådyr</li>
+          <li><input type="checkbox" />Sikahjort</li>
+        </ul>
+      </div>
+      <div id="listWeapons" class="dropdown-check-list" tabindex="100">
+        <span class="anchor">Tilladte våben</span>
+        <ul class="items">
+          <li><input type="checkbox" />Haglgevær</li>
+          <li><input type="checkbox" />Jagtriffle</li>
+          <li><input type="checkbox" />Salonriffle</li>
+          <li><input type="checkbox" />Luftgevær</li>
+          <li><input type="checkbox" />Bue og pil</li>
+        </ul>
+      </div>
+      <h3>Ejer oplysninger</h3>
+      <input type="text" id="owner" placeholder="Navnet på ejeren" required>
+      <input type="email" id="mail" placeholder="Skriv ejers Email" required>
+      <input type="text" id="address" placeholder="Skriv ejers adresse" required>
+      <input type="number" id="tlf" placeholder="Skriv ejers tlf. nr." required>
+      <h3>Tilføj billede af området</h3>
+      <input id="img" type="file" name="img" placeholder="Billede af området">
       <button type="button" name="button" onclick="createUser()">Create User</button>
     </form>
 
