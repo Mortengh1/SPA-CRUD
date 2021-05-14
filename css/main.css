@@ -188,6 +188,12 @@ h1 {
   transform: translateY(-50%);
 }
 
+.firebaseui-form-actions {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+
 .firebaseui-container {
   font-family: var(--font-family);
   font: 16px var(--font-family);
@@ -206,6 +212,10 @@ h1 {
   background: var(--green);
   color: #fff;
   border-radius: 0;
+}
+
+.firebaseui-id-submit .firebaseui-button .mdl-button .mdl-js-button .mdl-button--raised .mdl-button--colored {
+  left: -50%;
 }
 
 .firebaseui-textfield.mdl-textfield .firebaseui-label::after {
@@ -336,10 +346,12 @@ button {
   color: transparent;
 }
 
-.addToFavorite:active {
+
+
+.addToFavorite:hover {
   color: #f1f1f1;
 }
 
-.addToFavorite:hover {
+.rm {
   color: #f1f1f1;
 }

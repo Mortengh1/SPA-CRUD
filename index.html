@@ -56,10 +56,20 @@
     </form>
 
 
-    <form id="update-user">
+    <form id="update-place">
       <h2>Update User</h2>
-      <input class="input" type="text" id="name-update" required>
-      <input class="input" type="email" id="mail-update" required>
+      <input class="input" type="text" id="name" placeholder="Skriv område navn" required>
+      <input class="input" type="text" id="description" placeholder="Skriv en beskrivelse af området" required>
+      <input class="input" type="text" id="animal" placeholder="Hvilke dyr kan jages?" required>
+      <input class="input" type="text" id="weapon" placeholder="Hvilke våben er tilladte?" required>
+      <h3>Ejer oplysninger</h3>
+      <input class="input" type="text" id="owner" placeholder="Navnet på ejeren" required>
+      <input class="input" type="email" id="mail" placeholder="Skriv ejers Email" required>
+      <input class="input" type="text" id="address" placeholder="Skriv ejers adresse" required>
+      <input class="input" type="number" id="tlf" placeholder="Skriv ejers tlf. nr." required>
+      <h3>Tilføj billede af området</h3>
+      <input type="file" id="img" accept="image/*" onchange="previewImage(this.files[0], 'imagePreview')">
+      <img id="imagePreview" class="image-preview">
       <button type="button" name="button" onclick="updateUser()">Update User</button>
     </form>
   </section>
@@ -69,7 +79,7 @@
     <header class="topbar">
       <h2>Favoritter</h2>
     </header>
-    <p>This is my about page</p>
+    <section id="fav-place-container" class="grid-container"></section>
   </section>
 
   <!-- profile page -->
