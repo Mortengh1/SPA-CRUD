@@ -13,9 +13,9 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const placeRef = db.collection("places");
-const _userRef = db.collection("users")
+const _db = firebase.firestore();
+const _placeRef = _db.collection("places");
+const _userRef = _db.collection("users")
 
 let _currentUser;
 let _places;
@@ -36,8 +36,8 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 function userAuthenticated(user) {
   _currentUser = user;
-  appendUserData(user);
   hideTabbar(false);
+  init();
   showLoader(false);
 }
 
@@ -78,36 +78,49 @@ function hideTabbar(hide) {
 // sign out user
 function logout() {
   firebase.auth().signOut();
+  // reset input fields
+  document.querySelector('#user-name').value = "";
+  document.querySelector('#user-mail').value = "";
+  document.querySelector('#user-birthdate').value = "";
+  document.querySelector('#imagePreview').src = "";
 }
 
 function appendUserData(user) {
   console.log(user);
-  document.querySelector('#user-data').innerHTML = `
-    <img class="profile-img" src="${user.photoURL || "img/placeholder.jpg"}">
-    <h3>${user.displayName}</h3>
-    <p>${user.email}</p>
-  `;
+  document.querySelector('#user-name').value = _currentUser.userName;
+  document.querySelector('#user-mail').value = _currentUser.userMail;
+  document.querySelector('#user-birthdate').value = _currentUser.userBirthdate;
+  document.querySelector('#imagePreview').src = _currentUser.userImg;
+  console.log(user);
 }
 
-// ========== READ ==========
-placeRef.onSnapshot(function (snapshotData) {
-  let places = [];
-  snapshotData.forEach(function (doc) {
-    let place = doc.data();
-    console.log(place);
-    place.id = doc.id;
-    places.push(place);
-  });
-  appendPlaces(places);
-});
+// update user data - auth user and database object
+function updateUser() {
+  let user = firebase.auth().currentUser;
 
+  // update auth user
+  user.updateProfile({
+    displayName: document.querySelector('#user-name').value
+  });
+
+  // update database user
+  _userRef.doc(_currentUser.uid).set({
+    img: document.querySelector('#imagePreview').src,
+    birthdate: document.querySelector('#user-birthdate').value,
+  }, {
+    merge: true
+  });
+}
+
+
+// ========== READ ==========
 
 // ========== PLACE FUNCTIONALITY ========== / /
 
 // initialize place references - all movies and user's favourite movies
 function init() {
   // init user data and favourite movies
-  _userRef.doc(selev.uid).onSnapshot({
+  _userRef.doc(_currentUser.uid).onSnapshot({
     includeMetadataChanges: true
   }, function (userData) {
     if (!userData.metadata.hasPendingWrites && userData.data()) {
@@ -116,7 +129,7 @@ function init() {
         ...userData.data()
       }; //concating two objects: authUser object and userData objec from the db
       appendUserData();
-      appendFavPlaces(_currentUser.favPlaces);
+      appendFavPlace(_currentUser.favPlaces);
       if (_places) {
         appendPlaces(_places); // refresh movies when user data changes
       }
@@ -125,14 +138,14 @@ function init() {
   });
 
   // init all movies
-  placeRef.orderBy("year").onSnapshot(snapshotData => {
+  _placeRef.onSnapshot(snapshotData => {
     _places = [];
     snapshotData.forEach(doc => {
-      let movie = doc.data();
-      movie.id = doc.id;
+      let place = doc.data();
+      place.id = doc.id;
       _places.push(place);
     });
-    appendMovies(_places);
+    appendPlaces(_places);
   });
 }
 
@@ -141,7 +154,7 @@ function init() {
 function appendPlaces(places) {
   console.log(places);
   let htmlTemplate = "";
-  for (const place of places) {
+  for (let place of places) {
     htmlTemplate += /*html*/ `
     <article>
       <div class="headline">
@@ -173,19 +186,19 @@ function appendPlaces(places) {
     <p><span>Tlf.:</span> ${place.tlf}</p>
   </div>
   <div class="buttons">
-    <button onclick="selectPlace('${place.id}','${place.name}', '${place.mail}');"><a href="#update-user">Update</a></button>
+    <button onclick="selectPlace('${place.id}','${place.name}', '${place.mail}');"><a href="#add">Update</a></button>
     <button class="button-delete" onclick="deletePlace('${place.id}')">Delete</button>
     ${generateFavPlaceButton(place.id)}
   </div>
   </article>
     `;
   }
-  document.querySelector("#places-container").innerHTML = htmlTemplate;
+  document.querySelector("#place-container").innerHTML = htmlTemplate;
 }
 
 function generateFavPlaceButton(placeId) {
   let btnTemplate = /*html*/ `
-    <button class="addToFavorite" onclick="addToFavourites('${placeId}')"><i class="fas fa-star"></i></button>`;
+    <button onclick="addToFavourites('${placeId}')" class="addToFavorite"><i class="fas fa-star"></i></button>`;
   if (_currentUser.favPlaces && _currentUser.favPlaces.includes(placeId)) {
     btnTemplate = /*html*/ `
       <button onclick="removeFromFavourites('${placeId}')" class="rm"><i class="fas fa-star"></i></button>`;
@@ -194,13 +207,14 @@ function generateFavPlaceButton(placeId) {
 }
 
 // append favourite movies to the DOM
-async function appendFavPlaces(favPlaceIds = []) {
+async function appendFavPlace(favPlaceIds = []) {
+  console.log(favPlaceIds);
   let htmlTemplate = "";
   if (favPlaceIds.length === 0) {
-    htmlTemplate = "<p>Please, add movies to favourites.</p>";
+    htmlTemplate = "<p>Please, add places to favourites.</p>";
   } else {
     for (let placeId of favPlaceIds) {
-      await placeRef.doc(placeId).get().then(function (doc) {
+      await _placeRef.doc(placeId).get().then(function (doc) {
         let place = doc.data();
         place.id = doc.id;
         htmlTemplate += /*html*/ `
@@ -234,9 +248,9 @@ async function appendFavPlaces(favPlaceIds = []) {
     <p><span>Tlf.:</span> ${place.tlf}</p>
   </div>
   <div class="buttons">
-    <button onclick = "selectPlace('${place.id}', '${name}', '${description}', '${animal}', '${weapon}', '${owner}', '${address}', '${tlf}', '${mail}', '${img}')"><a href="#update-user">Update</a></button>
+    <button onclick = "selectPlace('${place.id}', '${place.name}', '${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.address}', '${place.tlf}', '${place.mail}', '${place.img}')"><a href="#add">Update</a></button>
     <button class="button-delete" onclick="deletePlace('${place.id}')">Delete</button>
-    <button onclick="removeFromFavourites('${placeId}')" class="rm"><i class="fas fa-star"></i></button>
+    <button onclick="removeFromFavourites('${place.id}')" class="rm"><i class="fas fa-star"></i></button>
   </div>
         </article>
       `;
@@ -295,7 +309,7 @@ function createPlace() {
   };
   console.log(newPlace);
 
-  placeRef.add(newPlace);
+  _placeRef.add(newPlace);
   showLoader(true);
 
   navigateTo("home");
@@ -318,15 +332,15 @@ function createPlace() {
 
 async function selectPlace(id, name, description, animal, weapon, owner, address, tlf, mail, img) {
   // references to the input fields
-  let nameInput = document.querySelector('#name');
-  let descriptionInput = document.querySelector('#description');
-  let animalInput = document.querySelector('#animal');
-  let weaponInput = document.querySelector('#weapon');
-  let ownerInput = document.querySelector('#owner');
-  let mailInput = document.querySelector('#mail');
-  let addressInput = document.querySelector('#address');
-  let tlfInput = document.querySelector('#tlf');
-  let imgInput = document.querySelector('#img');
+  let nameInput = document.querySelector('#name-update');
+  let descriptionInput = document.querySelector('#description-update');
+  let animalInput = document.querySelector('#animal-update');
+  let weaponInput = document.querySelector('#weapon-update');
+  let ownerInput = document.querySelector('#owner-update');
+  let mailInput = document.querySelector('#mail-update');
+  let addressInput = document.querySelector('#address-update');
+  let tlfInput = document.querySelector('#tlf-update');
+  let imgInput = document.querySelector('#img-update');
   nameInput.value = name;
   descriptionInput.value = description;
   animalInput.value = animal;
@@ -342,26 +356,6 @@ async function selectPlace(id, name, description, animal, weapon, owner, address
 
   navigateTo("add");
 }
-
-// ========== DELETE ==========
-function deletePlace(id) {
-  // TODO: delete user by the given id
-  console.log(id);
-  placeRef.doc(id).delete();
-}
-
-// doing the magic - image preview
-function previewImage(file, previewId) {
-  if (file) {
-    selectedImgFile = file;
-    let reader = new FileReader();
-    reader.onload = event => {
-      document.querySelector('#' + previewId).setAttribute('src', event.target.result);
-    };
-    reader.readAsDataURL(file);
-  }
-}
-
 
 function updatePlace() {
   let nameInput = document.querySelector('#name-update');
@@ -405,4 +399,22 @@ function updatePlace() {
   imgInput.src = "";
 
   showLoader(false);
+}
+// ========== DELETE ==========
+function deletePlace(id) {
+  // TODO: delete user by the given id
+  console.log(id);
+  placeRef.doc(id).delete();
+}
+
+// doing the magic - image preview
+function previewImage(file, previewId) {
+  if (file) {
+
+    let reader = new FileReader();
+    reader.onload = event => {
+      document.querySelector('#' + previewId).setAttribute('src', event.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
 }

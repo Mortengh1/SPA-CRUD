@@ -29,7 +29,7 @@
     </header>
     <input class="input" type="search" placeholder="Søg &#40;Postnr., Dyr eller Våben&#41; "
       onkeyup="search(this.value)">
-    <section id="places-container" class="grid-container"></section>
+    <div id="place-container" class="grid-container"></div>
   </section>
 
 
@@ -58,17 +58,17 @@
 
     <form id="update-place">
       <h2>Update User</h2>
-      <input class="input" type="text" id="name" placeholder="Skriv område navn" required>
-      <input class="input" type="text" id="description" placeholder="Skriv en beskrivelse af området" required>
-      <input class="input" type="text" id="animal" placeholder="Hvilke dyr kan jages?" required>
-      <input class="input" type="text" id="weapon" placeholder="Hvilke våben er tilladte?" required>
+      <input class="input" type="text" id="name-update" placeholder="Skriv område navn" required>
+      <input class="input" type="text" id="description-update" placeholder="Skriv en beskrivelse af området" required>
+      <input class="input" type="text" id="animal-update" placeholder="Hvilke dyr kan jages?" required>
+      <input class="input" type="text" id="weapon-update" placeholder="Hvilke våben er tilladte?" required>
       <h3>Ejer oplysninger</h3>
-      <input class="input" type="text" id="owner" placeholder="Navnet på ejeren" required>
-      <input class="input" type="email" id="mail" placeholder="Skriv ejers Email" required>
-      <input class="input" type="text" id="address" placeholder="Skriv ejers adresse" required>
-      <input class="input" type="number" id="tlf" placeholder="Skriv ejers tlf. nr." required>
+      <input class="input" type="text" id="owner-update" placeholder="Navnet på ejeren" required>
+      <input class="input" type="email" id="mail-update" placeholder="Skriv ejers Email" required>
+      <input class="input" type="text" id="address-update" placeholder="Skriv ejers adresse" required>
+      <input class="input" type="number" id="tlf-update" placeholder="Skriv ejers tlf. nr." required>
       <h3>Tilføj billede af området</h3>
-      <input type="file" id="img" accept="image/*" onchange="previewImage(this.files[0], 'imagePreview')">
+      <input type="file" id="img-update" accept="image/*" onchange="previewImage(this.files[0], 'imagePreview')">
       <img id="imagePreview" class="image-preview">
       <button type="button" name="button" onclick="updateUser()">Update User</button>
     </form>
@@ -88,7 +88,19 @@
       <h2>Profil</h2>
       <a class="right" href="#" onclick="logout()">Logout</a>
     </header>
-    <div id="user-data"></div>
+    <form>
+      <label for="user-name">Name</label>
+      <input class="input" type="text" id="user-name" placeholder="Type your name" required>
+      <label for="user-mail">Mail</label>
+      <input class="input" type="email" id="user-mail" placeholder="Type your mail" disabled>
+      <label for="user-birthdate">Birthdate</label>
+      <input class="input" type="text" id="user-birthdate" placeholder="Type your birthdate" required>
+      <label for="user-img">Profile Image</label>
+      <input class="input" type="file" id="user-img" accept="image/*"
+        onchange="previewImage(this.files[0], 'imagePreview')">
+      <img id="imagePreview" class="image-preview">
+      <button type="button" name="button" onclick="updateUser()">Save</button>
+    </form>
   </section>
 
   <!-- login page -->
