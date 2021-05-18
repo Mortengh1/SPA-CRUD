@@ -41,6 +41,7 @@
     <form id="userForm">
       <h2>Tilføj nyt Jagtområde</h2>
       <input class="input" type="text" id="name" placeholder="Skriv område navn" required>
+      <input class="input" type="text" id="postnr" placeholder="Skriv område postnr." required>
       <input class="input" type="text" id="description" placeholder="Skriv en beskrivelse af området" required>
       <input class="input" type="text" id="animal" placeholder="Hvilke dyr kan jages?" required>
       <input class="input" type="text" id="weapon" placeholder="Hvilke våben er tilladte?" required>
@@ -48,9 +49,9 @@
       <input class="input" type="text" id="owner" placeholder="Navnet på ejeren" required>
       <input class="input" type="email" id="mail" placeholder="Skriv ejers Email" required>
       <input class="input" type="text" id="address" placeholder="Skriv ejers adresse" required>
-      <input class="input" type="number" id="tlf" placeholder="Skriv ejers tlf. nr." required>
+      <input class="input" type="text" id="tlf" placeholder="Skriv ejers tlf. nr." required>
       <h3>Tilføj billede af området</h3>
-      <input type="file" id="img" accept="image/*" onchange="previewImage(this.files[0], 'imagePreview')">
+      <input class="input" type="text" id="img" placeholder="Paste an image url" required>
       <img id="imagePreview" class="image-preview">
       <button type="button" name="button" onclick="createPlace()">Tilføj område</button>
     </form>
@@ -59,6 +60,7 @@
     <form id="update-place">
       <h2>Update User</h2>
       <input class="input" type="text" id="name-update" placeholder="Skriv område navn" required>
+      <input class="input" type="text" id="postnr-update" placeholder="Skriv område postnr." required>
       <input class="input" type="text" id="description-update" placeholder="Skriv en beskrivelse af området" required>
       <input class="input" type="text" id="animal-update" placeholder="Hvilke dyr kan jages?" required>
       <input class="input" type="text" id="weapon-update" placeholder="Hvilke våben er tilladte?" required>
@@ -66,11 +68,11 @@
       <input class="input" type="text" id="owner-update" placeholder="Navnet på ejeren" required>
       <input class="input" type="email" id="mail-update" placeholder="Skriv ejers Email" required>
       <input class="input" type="text" id="address-update" placeholder="Skriv ejers adresse" required>
-      <input class="input" type="number" id="tlf-update" placeholder="Skriv ejers tlf. nr." required>
+      <input class="input" type="text" id="tlf-update" placeholder="Skriv ejers tlf. nr." required>
       <h3>Tilføj billede af området</h3>
-      <input type="file" id="img-update" accept="image/*" onchange="previewImage(this.files[0], 'imagePreview')">
+      <input class="input" type="text" id="img-update" placeholder="Paste an image url" required>
       <img id="imagePreview" class="image-preview">
-      <button type="button" name="button" onclick="updateUser()">Update User</button>
+      <button type="button" name="button" onclick="updatePlace()">Update Place</button>
     </form>
   </section>
 

@@ -330,7 +330,7 @@ button {
   border-radius: 5px;
 }
 
-.button-delete {
+#button-delete {
   background-color: red;
 }
 
@@ -338,12 +338,18 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 2%;
+  margin-top: 5%;
 }
 
 .addToFavorite {
   -webkit-text-stroke-width: 1.5px;
   -webkit-text-stroke-color: #f1f1f1;
   color: transparent;
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  font-size: 1.5em;
+  margin: 0 auto;
 }
 
 
@@ -353,4 +359,12 @@ button {
 
 .rm {
   color: #f1f1f1;
+}
+
+.btn-place {
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  font-size: 1.5em;
+  margin: 0 auto;
 }
