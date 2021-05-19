@@ -27,8 +27,7 @@
     <header class="topbar">
       <h2>Jagt Områder</h2>
     </header>
-    <input class="input" type="search" placeholder="Søg &#40;Postnr., Dyr eller Våben&#41; "
-      onkeyup="search(this.value)">
+    <input class="input" type="search" placeholder="Søg efter område" onkeyup="search(this.value)">
     <div id="place-container" class="grid-container"></div>
   </section>
 
@@ -41,7 +40,7 @@
     <form id="userForm">
       <h2>Tilføj nyt Jagtområde</h2>
       <input class="input" type="text" id="name" placeholder="Skriv område navn" required>
-      <input class="input" type="text" id="postnr" placeholder="Skriv område postnr." required>
+      <input class="input" type="text" id="city" placeholder="Skriv by for området" required>
       <input class="input" type="text" id="description" placeholder="Skriv en beskrivelse af området" required>
       <input class="input" type="text" id="animal" placeholder="Hvilke dyr kan jages?" required>
       <input class="input" type="text" id="weapon" placeholder="Hvilke våben er tilladte?" required>
@@ -52,15 +51,18 @@
       <input class="input" type="text" id="tlf" placeholder="Skriv ejers tlf. nr." required>
       <h3>Tilføj billede af området</h3>
       <input class="input" type="text" id="img" placeholder="Paste an image url" required>
-      <img id="imagePreview" class="image-preview">
       <button type="button" name="button" onclick="createPlace()">Tilføj område</button>
     </form>
+  </section>
 
-
+  <section id="edit" class="page">
+    <header class="topbar">
+      <h2>Rediger område</h2>
+    </header>
     <form id="update-place">
-      <h2>Update User</h2>
+      <h2>Rediger område</h2>
       <input class="input" type="text" id="name-update" placeholder="Skriv område navn" required>
-      <input class="input" type="text" id="postnr-update" placeholder="Skriv område postnr." required>
+      <input class="input" type="text" id="city-update" placeholder="Skriv by for området" required>
       <input class="input" type="text" id="description-update" placeholder="Skriv en beskrivelse af området" required>
       <input class="input" type="text" id="animal-update" placeholder="Hvilke dyr kan jages?" required>
       <input class="input" type="text" id="weapon-update" placeholder="Hvilke våben er tilladte?" required>
@@ -71,7 +73,6 @@
       <input class="input" type="text" id="tlf-update" placeholder="Skriv ejers tlf. nr." required>
       <h3>Tilføj billede af området</h3>
       <input class="input" type="text" id="img-update" placeholder="Paste an image url" required>
-      <img id="imagePreview" class="image-preview">
       <button type="button" name="button" onclick="updatePlace()">Update Place</button>
     </form>
   </section>
@@ -90,7 +91,8 @@
       <h2>Profil</h2>
       <a class="right" href="#" onclick="logout()">Logout</a>
     </header>
-    <form>
+    <img class="profile-img" src="img/placeholder.jpg" alt="Profile Picture">
+    <form class="user-details">
       <label for="user-name">Name</label>
       <input class="input" type="text" id="user-name" placeholder="Type your name" required>
       <label for="user-mail">Mail</label>
@@ -98,9 +100,7 @@
       <label for="user-birthdate">Birthdate</label>
       <input class="input" type="text" id="user-birthdate" placeholder="Type your birthdate" required>
       <label for="user-img">Profile Image</label>
-      <input class="input" type="file" id="user-img" accept="image/*"
-        onchange="previewImage(this.files[0], 'imagePreview')">
-      <img id="imagePreview" class="image-preview">
+      <input class="input" type="file" id="user-img" accept="image/*">
       <button type="button" name="button" onclick="updateUser()">Save</button>
     </form>
   </section>

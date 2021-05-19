@@ -87,10 +87,10 @@ function logout() {
 
 function appendUserData(user) {
   console.log(user);
-  document.querySelector('#user-name').value = _currentUser.userName;
-  document.querySelector('#user-mail').value = _currentUser.userMail;
-  document.querySelector('#user-birthdate').value = _currentUser.userBirthdate;
-  document.querySelector('#imagePreview').src = _currentUser.userImg;
+  document.querySelector('#user-name').value = _currentUser.name;
+  document.querySelector('#user-mail').value = _currentUser.email;
+  document.querySelector('#user-birthdate').value = _currentUser.birthdate;
+  document.querySelector('#imagePreview').src = _currentUser.img;
   console.log(user);
 }
 
@@ -159,9 +159,9 @@ function appendPlaces(places) {
     <article>
       <div class="headline">
     <h2>${place.name}</h2>
-    <p id="by">${place.postnr}</p>
+    <p id="city">${place.city}</p>
   </div>
-    <img src="${place.img || 'img/placeholder.jpg'}">
+    <img src="${place.img || 'img/placeholderPlace.jpg'}">
 
     <div class="beskrivelse">
     <h3>Beskrivelse:</h3>
@@ -186,7 +186,7 @@ function appendPlaces(places) {
     <p><span>Tlf.:</span> ${place.tlf}</p>
   </div>
   <div class="buttons">
-    <button class="btn-place" onclick="selectPlace('${place.id}','${place.name}', '${place.postnr}', '${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}' ,'${place.address}', '${place.tlf},', '${place.img}');"><a href="#add"><i class="far fa-edit"></i></a></button>
+    <button class="btn-place" onclick="selectPlace('${place.id}','${place.name}', '${place.city}', '${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}' ,'${place.address}', '${place.tlf},', '${place.img}');"><a href="#edit"><i class="far fa-edit"></i></a></button>
     <button class="btn-place" id="button-delete" onclick="deletePlace('${place.id}')"><i class="far fa-trash-alt"></i></button>
     ${generateFavPlaceButton(place.id)}
   </div>
@@ -206,6 +206,23 @@ function generateFavPlaceButton(placeId) {
   return btnTemplate;
 }
 
+// ========== SEARCH ==========
+function search(value) {
+  value = value.toLowerCase();
+  console.log(value);
+
+  let filteredPlaces = [];
+
+  for (let place of _places) {
+    let name = place.name.toLowerCase();
+    if (name.includes(value)) {
+      filteredPlaces.push(place);
+    }
+  }
+  appendPlaces(filteredPlaces);
+}
+
+
 // append favourite movies to the DOM
 async function appendFavPlace(favPlaceIds = []) {
   console.log(favPlaceIds);
@@ -221,9 +238,9 @@ async function appendFavPlace(favPlaceIds = []) {
         <article>
       <div class="headline">
     <h2>${place.name}</h2>
-    <p id="by">${place.postnr}</p>
+    <p id="city">${place.city}</p>
   </div>
-    <img src="${place.img || 'img/placeholder.jpg'}">
+    <img src="${place.img || 'img/placeholderPlace.jpg'}">
 
     <div class="beskrivelse">
     <h3>Beskrivelse:</h3>
@@ -248,7 +265,7 @@ async function appendFavPlace(favPlaceIds = []) {
     <p><span>Tlf.:</span> ${place.tlf}</p>
   </div>
   <div class="buttons">
-    <button class="btn-place" onclick = "selectPlace('${place.id}', '${place.name}', '${place.postnr}','${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}', '${place.address}', '${place.tlf}', '${place.img}')"><a href="#add"><i class="far fa-edit"></i></a></button>
+    <button class="btn-place" onclick = "selectPlace('${place.id}', '${place.name}', '${place.city}','${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}', '${place.address}', '${place.tlf}', '${place.img}')"><a href="#edit"><i class="far fa-edit"></i></a></button>
     <button class="btn-place" id="button-delete" onclick="deletePlace('${place.id}')"><i class="far fa-trash-alt"></i></button>
     <button class="btn-place" onclick="removeFromFavourites('${place.id}')" class="rm"><i class="fas fa-star"></i></button>
   </div>
@@ -286,7 +303,7 @@ function removeFromFavourites(placeId) {
 // ========== CREATE ==========
 function createPlace() {
   let nameVal = document.querySelector('#name');
-  let postnrVal = document.querySelector('#postnr');
+  let cityVal = document.querySelector('#city');
   let descriptionVal = document.querySelector('#description');
   let animalVal = document.querySelector('#animal');
   let weaponVal = document.querySelector('#weapon');
@@ -299,7 +316,7 @@ function createPlace() {
   // make sure to nagivate to home: navigateTo("home");
   let newPlace = {
     name: nameVal.value,
-    postnr: postnrVal.value,
+    city: cityVal.value,
     description: descriptionVal.value,
     animal: animalVal.value,
     weapon: weaponVal.value,
@@ -318,7 +335,7 @@ function createPlace() {
 
   //RESET
   nameVal.value = "";
-  postnrVal.value = "";
+  cityVal.value = "";
   descriptionVal.value = "";
   animalVal.value = "";
   weaponVal.value = "";
@@ -331,12 +348,13 @@ function createPlace() {
   showLoader(false);
 }
 
+
 // ========== UPDATE ==========
 
-async function selectPlace(id, name, postnr, description, animal, weapon, owner, mail, address, tlf, img) {
+async function selectPlace(id, name, city, description, animal, weapon, owner, mail, address, tlf, img) {
   // references to the input fields
   let nameInput = document.querySelector('#name-update');
-  let postnrInput = document.querySelector('#postnr-update');
+  let cityInput = document.querySelector('#city-update');
   let descriptionInput = document.querySelector('#description-update');
   let animalInput = document.querySelector('#animal-update');
   let weaponInput = document.querySelector('#weapon-update');
@@ -347,7 +365,7 @@ async function selectPlace(id, name, postnr, description, animal, weapon, owner,
   let imgInput = document.querySelector('#img-update');
 
   nameInput.value = name;
-  postnrInput.value = postnr;
+  cityInput.value = city;
   descriptionInput.value = description;
   animalInput.value = animal;
   weaponInput.value = weapon;
@@ -365,7 +383,7 @@ async function selectPlace(id, name, postnr, description, animal, weapon, owner,
 
 function updatePlace() {
   let nameInput = document.querySelector('#name-update');
-  let postnrInput = document.querySelector('#postnr-update');
+  let cityInput = document.querySelector('#city-update');
   let descriptionInput = document.querySelector('#description-update');
   let animalInput = document.querySelector('#animal-update');
   let weaponInput = document.querySelector('#weapon-update');
@@ -379,7 +397,7 @@ function updatePlace() {
   // make sure to nagivate to home
   let placeToUpdate = {
     name: nameInput.value,
-    postnr: postnrInput.value,
+    city: cityInput.value,
     description: descriptionInput.value,
     animal: animalInput.value,
     weapon: weaponInput.value,
@@ -397,7 +415,7 @@ function updatePlace() {
 
   //RESET
   nameInput.value = "";
-  postnrInput.value = "";
+  cityInput.value = "";
   descriptionInput.value = "";
   animalInput.value = "";
   weaponInput.value = "";
@@ -415,6 +433,11 @@ function deletePlace(id) {
   console.log(id);
   _placeRef.doc(id).delete();
 }
+
+
+
+
+
 
 // doing the magic - image preview
 function previewImage(file, previewId) {

@@ -226,6 +226,18 @@ h1 {
   width: 100%;
 }
 
+.user-details {
+  padding-top: 5%;
+  padding-bottom: 20%;
+}
+
+#edit {
+  padding-bottom: 25%;
+}
+
+#add {
+  padding-bottom: 25%;
+}
 
 /* Grid container */
 .grid-container {
@@ -256,10 +268,14 @@ h1 {
 .grid-container>article .headline {
   display: grid;
   grid-template-columns: 3fr 1fr;
+  text-align: start;
+  max-width: 300px;
+  margin: 0 auto;
 }
 
-.grid-container>article #by {
+.grid-container>article #city {
   padding-top: 12%;
+  text-align: end;
 }
 
 .grid-container>article .beskrivelse {
