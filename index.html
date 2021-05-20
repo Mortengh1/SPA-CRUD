@@ -91,7 +91,7 @@
       <h2>Profil</h2>
       <a class="right" href="#" onclick="logout()">Logout</a>
     </header>
-    <img class="profile-img" src="img/placeholder.jpg" alt="Profile Picture">
+    <section id="profilePic"></section>
     <form class="user-details">
       <label for="user-name">Name</label>
       <input class="input" type="text" id="user-name" placeholder="Type your name" required>
@@ -100,7 +100,7 @@
       <label for="user-birthdate">Birthdate</label>
       <input class="input" type="text" id="user-birthdate" placeholder="Type your birthdate" required>
       <label for="user-img">Profile Image</label>
-      <input class="input" type="file" id="user-img" accept="image/*">
+      <input class="input" type="text" id="user-img" placeholder="Indsæt link til profilbillede" accept="image/*">
       <button type="button" name="button" onclick="updateUser()">Save</button>
     </form>
   </section>

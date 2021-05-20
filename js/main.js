@@ -82,16 +82,28 @@ function logout() {
   document.querySelector('#user-name').value = "";
   document.querySelector('#user-mail').value = "";
   document.querySelector('#user-birthdate').value = "";
-  document.querySelector('#imagePreview').src = "";
+  document.querySelector('#user-img').value = "";
 }
 
+
 function appendUserData(user) {
-  console.log(user);
+  console.log(_currentUser);
   document.querySelector('#user-name').value = _currentUser.name;
   document.querySelector('#user-mail').value = _currentUser.email;
   document.querySelector('#user-birthdate').value = _currentUser.birthdate;
-  document.querySelector('#imagePreview').src = _currentUser.img;
+  document.querySelector('#user-img').value = _currentUser.img;
   console.log(user);
+}
+
+function appendPb(pb) {
+  console.log(pb);
+  let htmlTemplate = "";
+  for (let user of users) {
+    htmlTemplate += /*html*/ `
+<img class="profile-img" src="${user.img|| 'img/placeholder.jpg'}" alt=" Profile Picture">
+    `;
+  }
+  document.querySelector("#profilePic").innerHTML = htmlTemplate;
 }
 
 // update user data - auth user and database object
@@ -100,17 +112,18 @@ function updateUser() {
 
   // update auth user
   user.updateProfile({
-    displayName: document.querySelector('#user-name').value
+    name: document.querySelector('#user-name').value
   });
 
   // update database user
   _userRef.doc(_currentUser.uid).set({
-    img: document.querySelector('#imagePreview').src,
+    img: document.querySelector('#user-img').value,
     birthdate: document.querySelector('#user-birthdate').value,
   }, {
     merge: true
   });
 }
+
 
 
 // ========== READ ==========
@@ -161,7 +174,7 @@ function appendPlaces(places) {
     <h2>${place.name}</h2>
     <p id="city">${place.city}</p>
   </div>
-    <img src="${place.img || 'img/placeholderPlace.jpg'}">
+    <img src="${place.img || 'img/placeholder2.jpg'}">
 
     <div class="beskrivelse">
     <h3>Beskrivelse:</h3>
@@ -240,7 +253,7 @@ async function appendFavPlace(favPlaceIds = []) {
     <h2>${place.name}</h2>
     <p id="city">${place.city}</p>
   </div>
-    <img src="${place.img || 'img/placeholderPlace.jpg'}">
+    <img src="${place.img || 'img/placeholder2.jpg'}">
 
     <div class="beskrivelse">
     <h3>Beskrivelse:</h3>

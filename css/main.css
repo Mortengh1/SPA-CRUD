@@ -223,7 +223,13 @@ h1 {
 }
 
 .profile-img {
-  width: 100%;
+  max-width: 300px;
+  padding-top: 2%;
+}
+
+#profilePic {
+  width: 300px;
+  height: 200px;
 }
 
 .user-details {
@@ -246,23 +252,49 @@ h1 {
   padding: 10px;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 340px) {
+  .grid-container>article {
+    margin: 0 auto;
+  }
+
+
+}
+
+
+@media (min-width: 624px) {
+
   .grid-container {
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 3%;
+    justify-content: center;
   }
 }
 
 @media (min-width: 992px) {
   .grid-container {
-    grid-template-columns: 33.33% 33.33% 33.33%;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
+
+@media (min-width: 1300px) {
+  .grid-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
 
 .grid-container>article {
   background-color: var(--light-grey);
   padding: 10px;
   border-radius: 15px;
   margin-bottom: 20px;
+  max-width: 300px;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(0, 0, 0, 0.1) inset;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(0, 0, 0, 0.1) inset;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
 
 .grid-container>article .headline {
@@ -302,8 +334,9 @@ h1 {
 }
 
 .grid-container>article img {
-  max-width: 300px;
-  width: 100%;
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
   margin-bottom: 1em;
 }
 
