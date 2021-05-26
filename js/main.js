@@ -91,35 +91,24 @@ function appendUserData(user) {
   document.querySelector('#user-name').value = _currentUser.name;
   document.querySelector('#user-mail').value = _currentUser.email;
   document.querySelector('#user-birthdate').value = _currentUser.birthdate;
-  document.querySelector('#user-img').value = _currentUser.img;
+  document.querySelector('#user-img').value = _currentUser.img || '';
+  document.querySelector('#profilePic').src = _currentUser.img || 'img/placeholder.jpg';
   console.log(user);
 }
 
 //Sets a placeholder img when there is no profile img. (Dosent work)
-function appendPb(pb) {
-  console.log(pb);
-  let htmlTemplate = "";
-  for (let user of users) {
-    htmlTemplate += /*html*/ `
-<img class="profile-img" src="${user.img|| 'img/placeholder.jpg'}" alt=" Profile Picture">
-    `;
-  }
-  document.querySelector("#profilePic").innerHTML = htmlTemplate;
-}
+
 
 // update user data - auth user and database object
 function updateUser() {
   let user = firebase.auth().currentUser;
 
-  // update auth user
-  user.updateProfile({
-    name: document.querySelector('#user-name').value
-  });
 
   // update database user
   _userRef.doc(_currentUser.uid).set({
     img: document.querySelector('#user-img').value,
     birthdate: document.querySelector('#user-birthdate').value,
+    name: document.querySelector('#user-name').value
   }, {
     merge: true
   });
@@ -175,7 +164,7 @@ function appendPlaces(places) {
 <div class="articleContent">
       <div class="headline">
     <h2>${place.name}</h2>
-    <p id="city">${place.city}</p>
+    <p class="city">${place.city}</p>
   </div>
     
     <div class="beskrivelse">
@@ -200,8 +189,7 @@ function appendPlaces(places) {
     <p><span>Tlf.:</span> ${place.tlf}</p>
   </div>
   <div class="buttons">
-        <button class="btn-place" id="button-delete" onclick="deletePlace('${place.id}')"><i class="far fa-trash-alt"></i></button>
-    <button class="btn-place" id="btn-edit" onclick="selectPlace('${place.id}','${place.name}', '${place.city}', '${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}' ,'${place.address}', '${place.tlf},', '${place.img}');"><a href="#edit"><i class="far fa-edit"></i></a></button>
+    ${userButtons(place)}
     ${generateFavPlaceButton(place.id)}
   </div>
   </div>
@@ -257,7 +245,7 @@ async function appendFavPlace(favPlaceIds = []) {
 <div class="articleContent">
       <div class="headline">
     <h2>${place.name}</h2>
-    <p id="city">${place.city}</p>
+    <p class="city">${place.city}</p>
   </div>
 
     <div class="beskrivelse">
@@ -282,8 +270,7 @@ async function appendFavPlace(favPlaceIds = []) {
     <p><span>Tlf.:</span> ${place.tlf}</p>
   </div>
   <div class="buttons">
-    <button class="btn-place" id="button-delete" onclick="deletePlace('${place.id}')"><i class="far fa-trash-alt"></i></button>
-    <button class="btn-place" id="btn-edit" onclick = "selectPlace('${place.id}', '${place.name}', '${place.city}','${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}', '${place.address}', '${place.tlf}', '${place.img}')"><a href="#edit"><i class="far fa-edit"></i></a></button>
+    ${userButtons(place)}
     <button class="btn-place" onclick="removeFromFavourites('${place.id}')" class="rm"><i class="fas fa-star"></i></button>
   </div>
       </div>
@@ -316,12 +303,25 @@ function removeFromFavourites(placeId) {
   showLoader(false);
 }
 
+function userButtons(place) {
+  if (place.uid === _currentUser.uid) {
+    return /*html*/ `<button class="btn-place" id="button-delete" onclick="deletePlace('${place.id}')"><i class="far fa-trash-alt"></i></button>
+    <button class="btn-place" id="btn-edit" onclick = "selectPlace('${place.id}', '${place.name}', '${place.city}','${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}', '${place.address}', '${place.tlf}', '${place.img}')"><a href="#edit"><i class="far fa-edit"></i></a></button>
+`
+  } else {
+    return /*html*/ `<button class="disabledBtn" disabled>p</button>
+    <button class="disabledBtn" disabled>p</button>
+    `
+  }
+}
+
 
 // ========== CREATE ========== //
 function createPlace() {
   // references to the input fields
   let nameVal = document.querySelector('#name');
   let cityVal = document.querySelector('#city');
+  console.log(cityVal);
   let descriptionVal = document.querySelector('#description');
   let animalVal = document.querySelector('#animal');
   let weaponVal = document.querySelector('#weapon');
@@ -330,6 +330,7 @@ function createPlace() {
   let addressVal = document.querySelector('#address');
   let tlfVal = document.querySelector('#tlf');
   let imgVal = document.querySelector('#img');
+  console.log(_currentUser);
 
 
   let newPlace = {
@@ -342,7 +343,8 @@ function createPlace() {
     mail: mailVal.value,
     address: addressVal.value,
     tlf: tlfVal.value,
-    img: imgVal.value
+    img: imgVal.value,
+    uid: _currentUser.uid
   };
   console.log(newPlace);
 
