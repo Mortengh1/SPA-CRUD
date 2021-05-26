@@ -2,7 +2,7 @@
 
 // ========== Firebase sign in functionality ========== //
 
-// Your web app's Firebase configuration
+// Our web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyD2PQHFTcOpbfddZQnh9o7OqwyDm3cn7cU",
   authDomain: "jagt-c32bf.firebaseapp.com",
@@ -65,7 +65,7 @@ function userNotAuthenticated() {
 }
 
 
-// show and hide tabbar
+// Show and hide tabbar
 function hideTabbar(hide) {
   let tabbar = document.querySelector('#tabbar');
   if (hide) {
@@ -75,7 +75,7 @@ function hideTabbar(hide) {
   }
 }
 
-// sign out user
+// Sign out user
 function logout() {
   firebase.auth().signOut();
   // reset input fields
@@ -95,6 +95,7 @@ function appendUserData(user) {
   console.log(user);
 }
 
+//Sets a placeholder img when there is no profile img. (Dosent work)
 function appendPb(pb) {
   console.log(pb);
   let htmlTemplate = "";
@@ -126,13 +127,13 @@ function updateUser() {
 
 
 
-// ========== READ ==========
+// ========== READ ========== //
 
 // ========== PLACE FUNCTIONALITY ========== / /
 
-// initialize place references - all movies and user's favourite movies
+// initialize place references - all places and user's favourite places
 function init() {
-  // init user data and favourite movies
+  // init user data and favourite places
   _userRef.doc(_currentUser.uid).onSnapshot({
     includeMetadataChanges: true
   }, function (userData) {
@@ -144,13 +145,13 @@ function init() {
       appendUserData();
       appendFavPlace(_currentUser.favPlaces);
       if (_places) {
-        appendPlaces(_places); // refresh movies when user data changes
+        appendPlaces(_places); // refresh places when user data changes
       }
       showLoader(false);
     }
   });
 
-  // init all movies
+  // init all places
   _placeRef.onSnapshot(snapshotData => {
     _places = [];
     snapshotData.forEach(doc => {
@@ -163,22 +164,22 @@ function init() {
 }
 
 
-// append users to the DOM
+// append places to the DOM
 function appendPlaces(places) {
   console.log(places);
   let htmlTemplate = "";
   for (let place of places) {
     htmlTemplate += /*html*/ `
     <article>
+      <img src="${place.img || 'img/placeholder2.jpg'}">
+<div class="articleContent">
       <div class="headline">
     <h2>${place.name}</h2>
     <p id="city">${place.city}</p>
   </div>
-    <img src="${place.img || 'img/placeholder2.jpg'}">
-
+    
     <div class="beskrivelse">
-    <h3>Beskrivelse:</h3>
-    <p>${place.description}</p>
+<p><q>${place.description}</p>
     </div>
 
     <div class="dyr-våben">
@@ -199,9 +200,10 @@ function appendPlaces(places) {
     <p><span>Tlf.:</span> ${place.tlf}</p>
   </div>
   <div class="buttons">
-    <button class="btn-place" onclick="selectPlace('${place.id}','${place.name}', '${place.city}', '${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}' ,'${place.address}', '${place.tlf},', '${place.img}');"><a href="#edit"><i class="far fa-edit"></i></a></button>
-    <button class="btn-place" id="button-delete" onclick="deletePlace('${place.id}')"><i class="far fa-trash-alt"></i></button>
+        <button class="btn-place" id="button-delete" onclick="deletePlace('${place.id}')"><i class="far fa-trash-alt"></i></button>
+    <button class="btn-place" id="btn-edit" onclick="selectPlace('${place.id}','${place.name}', '${place.city}', '${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}' ,'${place.address}', '${place.tlf},', '${place.img}');"><a href="#edit"><i class="far fa-edit"></i></a></button>
     ${generateFavPlaceButton(place.id)}
+  </div>
   </div>
   </article>
     `;
@@ -209,6 +211,7 @@ function appendPlaces(places) {
   document.querySelector("#place-container").innerHTML = htmlTemplate;
 }
 
+//Chenges the button depending on if the place is a favourite or not
 function generateFavPlaceButton(placeId) {
   let btnTemplate = /*html*/ `
     <button class="addToFavorite" onclick="addToFavourites('${placeId}')"><i class="fas fa-star"></i></button>`;
@@ -219,7 +222,8 @@ function generateFavPlaceButton(placeId) {
   return btnTemplate;
 }
 
-// ========== SEARCH ==========
+// ========== SEARCH ========== //
+// Makes the user able to search after the name of the place
 function search(value) {
   value = value.toLowerCase();
   console.log(value);
@@ -236,7 +240,7 @@ function search(value) {
 }
 
 
-// append favourite movies to the DOM
+// append favourite places to the DOM
 async function appendFavPlace(favPlaceIds = []) {
   console.log(favPlaceIds);
   let htmlTemplate = "";
@@ -249,15 +253,15 @@ async function appendFavPlace(favPlaceIds = []) {
         place.id = doc.id;
         htmlTemplate += /*html*/ `
         <article>
+    <img src="${place.img || 'img/placeholder2.jpg'}">
+<div class="articleContent">
       <div class="headline">
     <h2>${place.name}</h2>
     <p id="city">${place.city}</p>
   </div>
-    <img src="${place.img || 'img/placeholder2.jpg'}">
 
     <div class="beskrivelse">
-    <h3>Beskrivelse:</h3>
-    <p>${place.description}</p>
+    <p><q>${place.description}</p>
     </div>
 
     <div class="dyr-våben">
@@ -278,10 +282,11 @@ async function appendFavPlace(favPlaceIds = []) {
     <p><span>Tlf.:</span> ${place.tlf}</p>
   </div>
   <div class="buttons">
-    <button class="btn-place" onclick = "selectPlace('${place.id}', '${place.name}', '${place.city}','${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}', '${place.address}', '${place.tlf}', '${place.img}')"><a href="#edit"><i class="far fa-edit"></i></a></button>
     <button class="btn-place" id="button-delete" onclick="deletePlace('${place.id}')"><i class="far fa-trash-alt"></i></button>
+    <button class="btn-place" id="btn-edit" onclick = "selectPlace('${place.id}', '${place.name}', '${place.city}','${place.description}', '${place.animal}', '${place.weapon}', '${place.owner}', '${place.mail}', '${place.address}', '${place.tlf}', '${place.img}')"><a href="#edit"><i class="far fa-edit"></i></a></button>
     <button class="btn-place" onclick="removeFromFavourites('${place.id}')" class="rm"><i class="fas fa-star"></i></button>
   </div>
+      </div>
         </article>
       `;
       });
@@ -291,7 +296,7 @@ async function appendFavPlace(favPlaceIds = []) {
 }
 
 
-// adds a given movieId to the favMovies array inside _currentUser
+// adds a given placeId to the favPlaces array inside _currentUser
 function addToFavourites(placeId) {
   showLoader(true);
   _userRef.doc(_currentUser.uid).set({
@@ -302,7 +307,7 @@ function addToFavourites(placeId) {
   showLoader(false);
 }
 
-// removes a given movieId to the favMovies array inside _currentUser
+// removes a given placeId to the favPlaces array inside _currentUser
 function removeFromFavourites(placeId) {
   showLoader(true);
   _userRef.doc(_currentUser.uid).update({
@@ -311,10 +316,10 @@ function removeFromFavourites(placeId) {
   showLoader(false);
 }
 
-//TODO: Make favoriteButton to a checkbox and make it add post to favorite page if checked
 
-// ========== CREATE ==========
+// ========== CREATE ========== //
 function createPlace() {
+  // references to the input fields
   let nameVal = document.querySelector('#name');
   let cityVal = document.querySelector('#city');
   let descriptionVal = document.querySelector('#description');
@@ -326,7 +331,7 @@ function createPlace() {
   let tlfVal = document.querySelector('#tlf');
   let imgVal = document.querySelector('#img');
 
-  // make sure to nagivate to home: navigateTo("home");
+
   let newPlace = {
     name: nameVal.value,
     city: cityVal.value,
@@ -344,9 +349,10 @@ function createPlace() {
   _placeRef.add(newPlace);
   showLoader(true);
 
+  //Makes the user go to the frontpage
   navigateTo("home");
 
-  //RESET
+  //Resets the fields 
   nameVal.value = "";
   cityVal.value = "";
   descriptionVal.value = "";
@@ -362,7 +368,7 @@ function createPlace() {
 }
 
 
-// ========== UPDATE ==========
+// ========== UPDATE ========== //
 
 async function selectPlace(id, name, city, description, animal, weapon, owner, mail, address, tlf, img) {
   // references to the input fields
@@ -391,10 +397,12 @@ async function selectPlace(id, name, city, description, animal, weapon, owner, m
 
   _selectedPlaceId = id;
 
+  //Makes the user go to the "add" page
   navigateTo("add");
 }
 
 function updatePlace() {
+  // references to the input fields
   let nameInput = document.querySelector('#name-update');
   let cityInput = document.querySelector('#city-update');
   let descriptionInput = document.querySelector('#description-update');
@@ -406,8 +414,6 @@ function updatePlace() {
   let tlfInput = document.querySelector('#tlf-update');
   let imgInput = document.querySelector('#img-update');
 
-  // TODO: create a userToUpdate object and update _userRef (cloud firestore)
-  // make sure to nagivate to home
   let placeToUpdate = {
     name: nameInput.value,
     city: cityInput.value,
@@ -424,9 +430,10 @@ function updatePlace() {
 
   showLoader(true);
 
+  //Makes the user go to the frontpage
   navigateTo("home");
 
-  //RESET
+  //Resets the fields
   nameInput.value = "";
   cityInput.value = "";
   descriptionInput.value = "";
@@ -440,26 +447,9 @@ function updatePlace() {
 
   showLoader(false);
 }
-// ========== DELETE ==========
+// ========== DELETE ========== //
+//Deletes the chosen place by the selected id
 function deletePlace(id) {
-  // TODO: delete user by the given id
   console.log(id);
   _placeRef.doc(id).delete();
-}
-
-
-
-
-
-
-// doing the magic - image preview
-function previewImage(file, previewId) {
-  if (file) {
-
-    let reader = new FileReader();
-    reader.onload = event => {
-      document.querySelector('#' + previewId).setAttribute('src', event.target.result);
-    };
-    reader.readAsDataURL(file);
-  }
 }
