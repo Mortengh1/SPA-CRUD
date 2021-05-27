@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
   <title>Jagt Områder</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Find og tilføj jagt områder">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1"">
+  <meta name=" description" content="Find og tilføj jagt områder">
   <meta name="author" content="Frederik Meiner og Morten Gedsted Hansen">
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
   <link rel="stylesheet" href="css/main.css">
@@ -20,6 +20,7 @@
     <a href="#favorite"><i class="fas fa-star"></i></a>
     <a href="#profile"><i class="fas fa-user-circle"></i></a>
   </nav>
+
 
   <!-- pages -->
   <!-- home page -->
@@ -48,7 +49,7 @@
       <input class="input" type="text" id="owner" placeholder="Navnet på ejeren" required>
       <input class="input" type="email" id="mail" placeholder="Skriv ejers Email" required>
       <input class="input" type="text" id="address" placeholder="Skriv ejers adresse" required>
-      <input class="input" type="text" id="tlf" placeholder="Skriv ejers tlf. nr." required>
+      <input class="input" type="text" id="tlf" placeholder="Skriv ejers telefonnr." required>
       <h3>Tilføj billede af området</h3>
       <input class="input" type="text" id="img" placeholder="Paste an image url" required>
       <button type="button" name="button" onclick="createPlace()">Tilføj område</button>
@@ -70,7 +71,7 @@
       <input class="input" type="text" id="owner-update" placeholder="Navnet på ejeren" required>
       <input class="input" type="email" id="mail-update" placeholder="Skriv ejers Email" required>
       <input class="input" type="text" id="address-update" placeholder="Skriv ejers adresse" required>
-      <input class="input" type="text" id="tlf-update" placeholder="Skriv ejers tlf. nr." required>
+      <input class="input" type="text" id="tlf-update" placeholder="Skriv ejers telefonnr." required>
       <h3>Tilføj billede af området</h3>
       <input class="input" type="text" id="img-update" placeholder="Paste an image url" required>
       <button type="button" name="button" onclick="updatePlace()">Opdater område</button>
@@ -91,18 +92,24 @@
       <h2>Profil</h2>
       <a class="right" href="#" onclick="logout()">Logout</a>
     </header>
-    <img id="profilePic" src="img/placeholder.jpg" alt="pb">
-    <form class="user-details">
-      <label for="user-name">Navn</label>
-      <input class="input" type="text" id="user-name" placeholder="Type your name" required>
-      <label for="user-mail">Email</label>
-      <input class="input" type="email" id="user-mail" placeholder="Type your mail" disabled>
-      <label for="user-birthdate">Fødselsdato</label>
-      <input class="input" type="text" id="user-birthdate" placeholder="Type your birthdate" required>
-      <label for="user-img">Profil billede</label>
-      <input class="input" type="text" id="user-img" placeholder="Indsæt link til profilbillede" accept="image/*">
-      <button type="button" name="button" onclick="updateUser()">Gem</button>
-    </form>
+    <div class="profileContainer">
+      <div class="profilePicContainer">
+        <img id="profilePic" src="img/placeholder.jpg" alt="pb">
+      </div>
+      <div class="formContainer">
+        <form class="user-details">
+          <label for="user-name">Navn</label>
+          <input class="input" type="text" id="user-name" placeholder="Type your name" required>
+          <label for="user-mail">Email</label>
+          <input class="input" type="email" id="user-mail" placeholder="Type your mail" disabled>
+          <label for="user-birthdate">Fødselsdato</label>
+          <input class="input" type="text" id="user-birthdate" placeholder="Type your birthdate" required>
+          <label for="user-img">Profil billede</label>
+          <input class="input" type="text" id="user-img" placeholder="Indsæt link til profilbillede" accept="image/*">
+          <button type="button" name="button" onclick="updateUser()">Gem</button>
+        </form>
+      </div>
+    </div>
   </section>
 
   <!-- login page -->
