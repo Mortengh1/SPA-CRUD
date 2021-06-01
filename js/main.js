@@ -52,7 +52,6 @@ function userNotAuthenticated() {
     signInOptions: [
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID
     ],
     signInSuccessUrl: '#home'
   };
@@ -233,7 +232,7 @@ async function appendFavPlace(favPlaceIds = []) {
   console.log(favPlaceIds);
   let htmlTemplate = "";
   if (favPlaceIds.length === 0) {
-    htmlTemplate = "<p>Please, add places to favourites.</p>";
+    htmlTemplate = /*html*/ `<p> Du har ikke tilføjet nogen områder til favoritter. <br> Tryk på <i class="fas fa-star"></> på et område for at komme igang!</p>`;
   } else {
     for (let placeId of favPlaceIds) {
       await _placeRef.doc(placeId).get().then(function (doc) {
@@ -426,7 +425,8 @@ function updatePlace() {
     mail: mailInput.value,
     address: addressInput.value,
     tlf: tlfInput.value,
-    img: imgInput.value
+    img: imgInput.value,
+    uid: _currentUser.uid
   };
   _placeRef.doc(_selectedPlaceId).set(placeToUpdate);
 
